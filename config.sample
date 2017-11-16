@@ -6,7 +6,7 @@
 # PROJECTS_DIR defaults to `dirname "$MY_PROJECTS_DIR"`
 PROJECTS_DIR=~/Projects
 
-DOTFILES_INSTALL=false
+DOTFILES_INSTALL=true
 DOTFILES_REPO=https://github.com/paulojeronimo/dotfiles
 
 SDKMAN_INSTALL=true

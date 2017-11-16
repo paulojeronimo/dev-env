@@ -15,4 +15,8 @@ cd
 rm -rf $VMwareTool_dir
 tar xvfz "$VMwareTool"
 cd $VMwareTool_dir
-sudo ./vmware-install.pl
+
+# https://kb.vmware.com/s/article/1013159
+sudo rm -rf /etc/vmware-tools/locations
+
+sudo ./vmware-install.pl -f -d

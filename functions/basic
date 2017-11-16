@@ -99,4 +99,7 @@ sdkman_install() {
     info "Installing sdkman ..."
     curl -s "https://get.sdkman.io" | bash
 
+    yes | sdk install java 8u151-oracle
+    sdk install maven
+    sdk install gradle
 }
