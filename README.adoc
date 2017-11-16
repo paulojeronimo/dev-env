@@ -1,0 +1,23 @@
+= Scripts to build a development environment (dev-env)
+
+== Download and configuration
+
+----
+$ project_dir=~/Projects/github.com/paulojeronimo
+$ repo=https://github.com/paulojeronimo/dev-env
+----
+
+----
+$ mkdir -p $project_dir && \
+cd $project_dir && \
+git clone $repo && \
+cd ${repo##*/} && \
+cp config.sample config \
+vim config
+----
+
+== Installation
+
+----
+$ ./install
+----

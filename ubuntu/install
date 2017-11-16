@@ -1,0 +1,11 @@
+#!/bin/bash
+
+BASE_DIR=`cd "$(dirname "$0")"; pwd`
+
+f=$BASE_DIR/packages; [ -f "$f" ] || f=$f.sample
+PACKAGES=$(cat "$f")
+
+for package in ${PACKAGES[*]}
+do
+  sudo apt-get install -y $package
+done

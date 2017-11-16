@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# MY_PROJECTS_DIR defaults to $BASE_DIR/..
+#MY_PROJECTS_DIR=~/Projects/github.com/paulojeronimo
+
+# PROJECTS_DIR defaults to `dirname "$MY_PROJECTS_DIR"`
+PROJECTS_DIR=~/Projects
+
+DOTFILES_REPO=https://github.com/paulojeronimo/dotfiles
