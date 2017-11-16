@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+VMwareTool=${VMwareTool:-"/media/pj/VMware Tools/VMwareTools-10.1.6-5214329.tar.gz"}
+VMwareTool_dir=vmware-tools-distrib
+
+if ! [ -f "$VMwareTool" ]
+then
+    echo "File $VMwareTool not found!"
+    exit 1
+fi
+
+cd
+
+rm -rf $VMwareTool_dir
+tar xvfz "$VMwareTool"
+cd $VMwareTool_dir
+sudo ./vmware-install.pl

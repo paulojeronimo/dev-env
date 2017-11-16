@@ -2,8 +2,10 @@
 
 BASE_DIR=`cd "$(dirname "$0")"; pwd`
 
-f=$BASE_DIR/packages; [ -f "$f" ] || f=$f.sample
+f=$BASE_DIR/packages.config; [ -f "$f" ] || f=$f.sample
 PACKAGES=$(cat "$f")
+
+sudo apt-get update
 
 for package in ${PACKAGES[*]}
 do

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+readonly LEVEL_INFO=1
+readonly LEVEL_WARNING=2
+readonly LEVEL_DEBUG=3
+
+LEVEL=${LEVEL:-$LEVEL_WARNING}
+
+info() { (( $LEVEL >= $LEVEL_INFO )) && echo "INFO: $@" || true; }
+warning() { (( $LEVEL >= $LEVEL_WARNING )) && echo "WARNING: $@" || true; }
+debug() { (( $LEVEL >= $LEVEL_DEBUG )) && echo "DEBUG: $@" || true; }

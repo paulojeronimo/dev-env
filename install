@@ -2,45 +2,28 @@
 set -e
 set +x
 
-readonly LEVEL_INFO=1
-readonly LEVEL_WARNING=2
-readonly LEVEL_DEBUG=3
-
-info() { (( $LEVEL >= $LEVEL_INFO )) && echo "INFO: $@" || true; }
-warning() { (( $LEVEL >= $LEVEL_WARNING )) && echo "WARNING: $@" || true; }
-debug() { (( $LEVEL >= $LEVEL_DEBUG )) && echo "DEBUG: $@" || true; }
-
 BASE_DIR=`cd "$(dirname "$0")"; pwd`
-LEVEL=${LEVEL:-$LEVEL_WARNING}
 
-config=$BASE_DIR/config; [ -f "$config" ] || config=$config.sample
-source "$config"
+source "$BASE_DIR"/functions/basic
+
+load_config
+
+# show if debug is on
+(( $LEVEL == $LEVEL_DEBUG )) && { echo "DEBUG:"; set -x; }
 
 MY_PROJECTS_DIR=${MY_PROJECTS_DIR:-`cd "$BASE_DIR/.."; pwd`}
 PROJECTS_DIR=${PROJECTS_DIR:-`dirname "$MY_PROJECTS_DIR"`}
 
-debug "PROJECTS_DIR=$PROJECTS_DIR"
-debug "MY_PROJECTS_DIR=$MY_PROJECTS_DIR"
-
-mkdir -p "$MY_PROJECTS_DIR"
-cd "$MY_PROJECTS_DIR"
-
-# debug block (ends on 'set +x'):
-(( $LEVEL == $LEVEL_DEBUG )) && { echo "DEBUG:"; set -x; }
-DOTFILES_REPO=${DOTFILES_REPO:-/dev/null}
-DOTFILES_DIR=${DOTFILES_REPO##*/}
 set +x
 
-if [ "$DOTFILES_DIR" != null ]
-then
-    if ! [ -d "$DOTFILES_DIR" ]
-    then
-        info "Cloning $DOTFILES_REPO inside $PWD ..."
-        git clone $DOTFILES_REPO 2> /dev/null
-    else
-        $DOTFILES_DIR/remove
-    fi
-    $DOTFILES_DIR/install
-else
-    warning "DOTFILES_REPO not configured!"
-fi
+packages_install
+
+change_to_dir "$MY_PROJECTS_DIR"
+
+$DOTFILES_INSTALL && \
+    dotfiles_install || \
+    warning "dotfiles configured to not be installed!"
+
+$SDKMAN_INSTALL && \
+    sdkman_install || \
+    warning "sdkman configured to not be installed!"

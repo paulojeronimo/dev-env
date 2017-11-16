@@ -1,0 +1,102 @@
+#!/bin/bash
+
+source "$BASE_DIR"/functions/log
+
+change_to_dir() {
+
+    local dir=$1
+
+    mkdir -p "$dir" && cd "$dir"
+
+}
+
+load_config() {
+
+    local config=$BASE_DIR/config
+
+    [ -f "$config" ] || config=$config.sample
+    source "$config"
+
+}
+
+distro_name() {
+
+    if ! [ `uname` = Linux ]
+    then
+        echo "not Linux"
+        return
+    fi
+
+    if ! which lsb_release &> /dev/null
+    then
+        if which apt-get &> /dev/null
+        then
+            sudo apt-get -y install lsb_release
+        elif which yum &> /dev/null
+        then
+            sudo yum -y install lsb_release
+        elif which dnf &> /dev/null
+        then
+            sudo dnf -y install lsb_release
+        else
+            echo "unknow Linux"
+            return
+        fi
+    fi
+    lsb_release -i | cut -d: -f2 | xargs
+
+}
+
+packages_install() {
+
+    case `uname` in
+        Linux)
+            local distro_name=`distro_name`
+            distro_name=${distro_name,,}
+            case "$distro_name" in
+                ubuntu|fedora|rhel)
+                    local cmd="$BASE_DIR"/$distro_name/packages.install
+                    info "Running $cmd ..."
+                    ;;
+            esac
+            ;;
+        Darwin)
+            info "Installing Homebrew packages ..."
+            ;;
+    esac
+
+}
+
+dotfiles_install() {
+
+    # show if debug is on
+    (( $LEVEL == $LEVEL_DEBUG )) && { echo "DEBUG:"; set -x; }
+
+    DOTFILES_REPO=${DOTFILES_REPO:-/dev/null}
+    DOTFILES_DIR=${DOTFILES_REPO##*/}
+
+    set +x
+
+    if [ "$DOTFILES_DIR" != null ]
+    then
+        if ! [ -d "$DOTFILES_DIR" ]
+        then
+            info "Cloning $DOTFILES_REPO inside $PWD ..."
+            git clone $DOTFILES_REPO 2> /dev/null
+        else
+            warning "dotfiles already installed, so ..."
+            $DOTFILES_DIR/remove
+        fi
+        $DOTFILES_DIR/install
+    else
+        warning "DOTFILES_REPO not configured!"
+    fi
+
+}
+
+sdkman_install() {
+
+    info "Installing sdkman ..."
+    curl -s "https://get.sdkman.io" | bash
+
+}
