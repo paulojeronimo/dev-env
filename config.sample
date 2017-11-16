@@ -1,10 +1,15 @@
 #!/bin/bash
 
+# Location of this repository in GitHub
+THIS_REPO=paulojeronimo/dev-env
+
 # MY_PROJECTS_DIR defaults to $BASE_DIR/..
 #MY_PROJECTS_DIR=~/Projects/github.com/paulojeronimo
 
 # PROJECTS_DIR defaults to `dirname "$MY_PROJECTS_DIR"`
 PROJECTS_DIR=~/Projects
+
+GITHUB_PROJECTS_DIR=$PROJECTS_DIR/github.com
 
 DOTFILES_INSTALL=true
 DOTFILES_REPO=https://github.com/paulojeronimo/dotfiles

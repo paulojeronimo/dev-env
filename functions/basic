@@ -10,6 +10,13 @@ change_to_dir() {
 
 }
 
+change_to_repo() {
+
+    local repo=$1
+    
+    change_to_dir "$GITHUB_PROJECTS_DIR"/$repo
+}
+
 load_config() {
 
     local config=$BASE_DIR/config
@@ -32,18 +39,18 @@ distro_name() {
         if which apt-get &> /dev/null
         then
             sudo apt-get -y install lsb_release
-        elif which yum &> /dev/null
-        then
-            sudo yum -y install lsb_release
         elif which dnf &> /dev/null
         then
-            sudo dnf -y install lsb_release
+            sudo dnf -y install redhat-lsb-core
+        elif which yum &> /dev/null
+        then
+            sudo yum -y install redhat-lsb-core
         else
             echo "unknow Linux"
             return
         fi
     fi
-    lsb_release -i | cut -d: -f2 | xargs
+    lsb_release -i | cut -d: -f2 | xargs | tr '[:upper:]' '[:lower:]'
 
 }
 
@@ -52,7 +59,6 @@ packages_install() {
     case `uname` in
         Linux)
             local distro_name=`distro_name`
-            distro_name=${distro_name,,}
             case "$distro_name" in
                 ubuntu|fedora|rhel)
                     local cmd="$BASE_DIR"/$distro_name/packages.install
@@ -99,7 +105,52 @@ sdkman_install() {
     info "Installing sdkman ..."
     curl -s "https://get.sdkman.io" | bash
 
+    source ~/.sdkman/bin/sdkman-init.sh
+
     yes | sdk install java 8u151-oracle
     sdk install maven
     sdk install gradle
+
+}
+
+github_clone_repo() {
+
+    local repo=$1
+    local repo_url=https://github.com/$repo
+    local owner_dir=$GITHUB_PROJECTS_DIR/`dirname "$repo"`
+
+    mkdir -p $owner_dir
+    pushd $owner_dir > /dev/null
+    git clone $repo_url
+    popd > /dev/null
+
+}
+
+install_this_repo() {
+
+    github_clone_repo $THIS_REPO
+    "$GITHUB_PROJECTS_DIR"/$THIS_REPO/install
+
+}
+
+package_install() {
+
+    local distro_name=`distro_name`
+
+    case "$distro_name" in
+        fedora)
+            sudo dnf -y install $1
+            ;;
+        ubuntu)
+            sudo apt-get -y install $1
+            ;;
+        rhel)
+            sudo yum -y install install $1
+            ;;
+        *)
+            echo "I don't know how to install $1 in $distro_name!"
+            return 1
+            ;;
+    esac
+
 }

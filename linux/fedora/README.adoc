@@ -1,0 +1,3 @@
+sudo dnf -y upgrade
+sudo reboot
+sudo dnf -y install git
