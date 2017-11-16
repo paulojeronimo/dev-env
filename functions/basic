@@ -56,13 +56,38 @@ distro_name() {
 
 packages_install() {
 
+    linux_packages_install() {
+
+        local packages_file=$BASE_DIR/linux/$1/packages.config
+        local packages
+
+        [ -f "$packages_file" ] || packages_file=$packages_file.sample
+
+        if ! [ -f "$packages_file" ]
+        then
+            warning "Packages file ($packages_file) not configured!"
+            return
+        else
+            packages=$(cat "$packages_file")
+        fi
+
+        local package
+        for package in ${packages[*]}
+        do
+            package_install $package
+        done
+
+    }
+
     case `uname` in
         Linux)
             local distro_name=`distro_name`
             case "$distro_name" in
                 ubuntu|fedora|rhel)
-                    local cmd="$BASE_DIR"/$distro_name/packages.install
-                    info "Running $cmd ..."
+                    linux_packages_install $distro_name
+                    ;;
+                *)
+                    echo "I can not install packages in \"$distro_name\"!"
                     ;;
             esac
             ;;

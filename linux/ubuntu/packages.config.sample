@@ -1,5 +1,5 @@
-net-tools
 curl
-vim
+net-tools
 tree
+vim
 xsel
