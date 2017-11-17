@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+set +x
+
+BASE_DIR=`cd "$(dirname "$0")"; pwd`
+
+source "$BASE_DIR"/functions/basic
+
+load_config
+
+packages_install

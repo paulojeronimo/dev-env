@@ -1,0 +1,22 @@
+#!/bin/bash
+
+BASE_DIR=`cd "$(dirname "$0")"; pwd`
+VBOX_DIR=`cd /run/media/$USER/VBOXADDITIONS* &> /dev/null && pwd || echo /dev/null`
+
+if [ "$VBOX_DIR" = /dev/null ]
+then
+    echo "VirtualBox Guest Additions CD not mounted!"
+    exit 1
+fi
+
+sudo dnf -y install gcc kernel-devel kernel-headers dkms perl
+export KERN_DIR=/usr/src/kernels/`uname -r`
+
+if ! [ -d $KERN_DIR ]
+then
+    echo "KERN_DIR ($KERN_DIR) does not exists!"
+    exit 1
+fi
+
+cd $VBOX_DIR
+sudo ./VBoxLinuxAdditions.run

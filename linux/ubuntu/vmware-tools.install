@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-VMwareTool=${VMwareTool:-"/media/pj/VMware Tools/VMwareTools-10.1.6-5214329.tar.gz"}
+VMwareTool=`echo /media/$USER/VMware\ Tools/VMwareTools-*.tar.gz`
 VMwareTool_dir=vmware-tools-distrib
 
 if ! [ -f "$VMwareTool" ]

@@ -5,6 +5,13 @@
 $ cat <<'EOF' | bash
 
 sudo dnf -y upgrade
+sudo reboot
+EOF
+----
+
+[source,bash]
+----
+$ cat <<'EOF' | bash
 sudo dnf -y install git
 
 repo=paulojeronimo/dev-env
