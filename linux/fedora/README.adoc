@@ -7,26 +7,24 @@ Update packages and reboot the machine:
 
 [source,bash]
 ----
-$ cat <<'EOF' | bash
-
 sudo dnf -y upgrade
 sudo reboot
-EOF
 ----
 
 Download this project and install it:
 
 [source,bash]
 ----
-$ cat <<'EOF' | bash
-sudo dnf -y install git
-
 repo=paulojeronimo/dev-env
-mkdir -p ~/Projects/github.com/`dirname $repo` && cd $_
+github_projects_dir=~/Projects/github.com
+----
+
+[source,bash]
+----
+sudo dnf -y install git
+mkdir -p $github_projects_dir/`dirname $repo` && cd $_
 git clone https://github.com/$repo && cd `basename $repo`
 ./install
-
-EOF
 ----
 
 If your installed OS is running on a virtual machine, you can install the specific virtualizer additions.

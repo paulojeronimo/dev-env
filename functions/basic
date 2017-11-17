@@ -74,14 +74,12 @@ packages_install() {
             warning "Packages file ($packages_file) not configured!"
             return
         else
-            packages=$(cat "$packages_file")
+            local package
+            for package in `cat "$packages_file"`
+            do
+                package_install $package
+            done
         fi
-
-        local package
-        for package in ${packages[*]}
-        do
-            package_install $package
-        done
 
     }
 
