@@ -26,6 +26,12 @@ load_config() {
 
 }
 
+configure_sudoers() {
+
+    echo "TODO: configure_sudoers"
+
+}
+
 distro_name() {
 
     if ! [ `uname` = Linux ]
@@ -100,28 +106,14 @@ packages_install() {
 
 dotfiles_install() {
 
-    # show if debug is on
-    (( $LEVEL == $LEVEL_DEBUG )) && { echo "DEBUG:"; set -x; }
-
-    DOTFILES_REPO=${DOTFILES_REPO:-/dev/null}
-    DOTFILES_DIR=${DOTFILES_REPO##*/}
-
-    set +x
-
-    if [ "$DOTFILES_DIR" != null ]
+    if ! [ "$DOTFILES_REPO" ]
     then
-        if ! [ -d "$DOTFILES_DIR" ]
-        then
-            info "Cloning $DOTFILES_REPO inside $PWD ..."
-            git clone $DOTFILES_REPO 2> /dev/null
-        else
-            warning "dotfiles already installed, so ..."
-            $DOTFILES_DIR/remove
-        fi
-        $DOTFILES_DIR/install
-    else
-        warning "DOTFILES_REPO not configured!"
+       warning 'DOTFILES_REPO not installed!'
+       return
     fi
+
+    github_clone_repo $DOTFILES_REPO
+    "$GITHUB_PROJECTS_DIR"/$DOTFILES_REPO/install
 
 }
 
@@ -132,9 +124,9 @@ sdkman_install() {
 
     source ~/.sdkman/bin/sdkman-init.sh
 
-    yes | sdk install java 8u151-oracle
-    sdk install maven
-    sdk install gradle
+    $JAVA_INSTALL && { yes | sdk install java 8u151-oracle; }
+    $MAVEN_INSTALL && sdk install maven
+    $GRADLE_INSTALL && sdk install gradle
 
 }
 
@@ -148,13 +140,6 @@ github_clone_repo() {
     pushd $owner_dir > /dev/null
     git clone $repo_url
     popd > /dev/null
-
-}
-
-install_this_repo() {
-
-    github_clone_repo $THIS_REPO
-    "$GITHUB_PROJECTS_DIR"/$THIS_REPO/install
 
 }
 

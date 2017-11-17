@@ -1,0 +1,9 @@
+#!/bin/bash
+
+BASE_DIR=`cd "$(dirname "$0")"; pwd`
+cd "$BASE_DIR"
+
+for f in $(find . -type f -name '*.adoc')
+do
+    asciidoctor $f
+done

@@ -1,23 +1,9 @@
-= Scripts to build a development environment (dev-env)
+= dev-env: Scripts to quickly build a development environment
 
-== Download and configuration
+These scripts are intended to quickly build a *Java development environment* for specific operational systems (OS).
 
-----
-$ project_dir=~/Projects/github.com/paulojeronimo
-$ repo=https://github.com/paulojeronimo/dev-env
-----
+Please, choose a OS to read more information about it:
 
-----
-$ mkdir -p $project_dir && \
-cd $project_dir && \
-git clone $repo && \
-cd ${repo##*/} && \
-cp config.sample config \
-vim config
-----
-
-== Installation
-
-----
-$ ./install
-----
+* Linux:
+** link:linux/ubuntu/README.html[Ubuntu]
+** link:linux/fedora/README.html[Fedora]

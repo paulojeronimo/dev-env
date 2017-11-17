@@ -1,7 +1,7 @@
-= Fedora installation
+= Ubuntu installation
 
-Install a fresh https://getfedora.org[Fedora].
-__(Last tested version: 27)__
+Install a fresh https://www.ubuntu.com[Ubuntu].
+__(Last tested version: 17.10)__
 
 Update packages and reboot the machine:
 
@@ -9,7 +9,8 @@ Update packages and reboot the machine:
 ----
 $ cat <<'EOF' | bash
 
-sudo dnf -y upgrade
+sudo apt-get update
+sudo apt-get upgrade -y
 sudo reboot
 EOF
 ----
@@ -19,7 +20,7 @@ Download this project and install it:
 [source,bash]
 ----
 $ cat <<'EOF' | bash
-sudo dnf -y install git
+sudo apt-get install -y git
 
 repo=paulojeronimo/dev-env
 mkdir -p ~/Projects/github.com/`dirname $repo` && cd $_
@@ -31,8 +32,8 @@ EOF
 
 If your installed OS is running on a virtual machine, you can install the specific virtualizer additions.
 
-If it is running on `VirtualBox`:
+If it is running on `VMware`:
 
 ----
-./linux/fedora/virtualbox-guest-additions.install
+./linux/ubuntu/vmware-tools.install
 ----

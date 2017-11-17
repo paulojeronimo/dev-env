@@ -7,18 +7,7 @@ BASE_DIR=`cd "$(dirname "$0")"; pwd`
 source "$BASE_DIR"/functions/basic
 
 load_config
-
-# show if debug is on
-(( $LEVEL == $LEVEL_DEBUG )) && { echo "DEBUG:"; set -x; }
-
-MY_PROJECTS_DIR=${MY_PROJECTS_DIR:-`cd "$BASE_DIR/.."; pwd`}
-PROJECTS_DIR=${PROJECTS_DIR:-`dirname "$MY_PROJECTS_DIR"`}
-
-set +x
-
 packages_install
-
-change_to_dir "$MY_PROJECTS_DIR"
 
 $DOTFILES_INSTALL && \
     dotfiles_install || \
